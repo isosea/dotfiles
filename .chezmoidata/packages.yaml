@@ -1,0 +1,22 @@
+packages:
+  darwin:
+    brews:
+      - bat
+      - chezmoi
+      - direnv
+      - fzf
+      - ghq
+      - go
+      - jq
+      - mise
+      - starship
+      - tree
+      - xdg-ninja
+    casks:
+      - brewlet
+      - docker-desktop
+      - font-hackgen
+      - font-hackgen-nerd
+      - obsidian
+      - raycast
+      - warp
