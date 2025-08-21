@@ -1,6 +1,7 @@
 export FZF_DEFAULT_OPTS="--reverse"
 export EDITOR="code -w"
 export STARSHIP_SHELL="zsh"
+export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/config.toml
 
 # 同じコマンドが連続する場合は1回だけ記録する & コマンドの頭にスペースを付けて実行すると記録しない
 export HISTCONTROL="ignoreboth"
