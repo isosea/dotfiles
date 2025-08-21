@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# ref: https://pihero.hatenadiary.jp/entry/2025/01/26/130123
+# ref: https://github.com/KokiHirokawa/dotfiles/blob/d30aa3bf7bdd962d63e0bd25c82380d30398cec4/run_onchange_setup-mac.sh.tmpl
+
+{{ if eq .chezmoi.os "darwin" -}}
+configure_keyboard () {
+    defaults write -g InitialKeyRepeat -int 15 # リピート入力認識までの時間
+    defaults write -g KeyRepeat -int 2 # キーのリピート速度
+}
+
+echo "🚀 Setup user defaults..."
+configure_keyboard
+{{ end -}}
