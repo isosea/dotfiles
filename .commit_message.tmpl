@@ -1,0 +1,9 @@
+{{- if .chezmoi.status.added -}}  
+Add {{ range .chezmoi.status.added }}{{ . | targetRelPath }}{{ end }}  
+{{- else if .chezmoi.status.modified -}}  
+Update {{ range .chezmoi.status.modified }}{{ . | targetRelPath }}{{ end }}  
+{{- else if .chezmoi.status.deleted -}}  
+Remove {{ range .chezmoi.status.deleted }}{{ . | targetRelPath }}{{ end }}  
+{{- else -}}  
+{{ promptString "Commit message" }}  
+{{- end }}
