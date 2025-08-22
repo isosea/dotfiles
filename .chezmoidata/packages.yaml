@@ -13,10 +13,14 @@ packages:
       - tree
       - xdg-ninja
     casks:
-      - brewlet
-      - docker-desktop
+      - raycast
+      - visual-studio-code
+      - warp
+      - docker
+      - sequel-ace
+      - notion
+      - figma
+      - obsidian
+      - google-japanese-ime
       - font-hackgen
       - font-hackgen-nerd
-      - obsidian
-      - raycast
-      - warp
