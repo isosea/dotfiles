@@ -1,3 +1,4 @@
+{{- if .chezmoi.status -}} 
 {{- if and .chezmoi.status .chezmoi.status.added -}}  
 Add {{ range .chezmoi.status.added }}{{ . | targetRelPath }}{{ end }}  
 {{- else if and .chezmoi.status .chezmoi.status.modified -}}  
