@@ -6,6 +6,7 @@ packages:
       - direnv
       - dockutil
       - fzf
+      - gh
       - ghq
       - go
       - jq
