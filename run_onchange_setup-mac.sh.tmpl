@@ -5,10 +5,35 @@
 
 {{ if eq .chezmoi.os "darwin" -}}
 configure_keyboard () {
-    defaults write -g InitialKeyRepeat -int 15 # リピート入力認識までの時間
-    defaults write -g KeyRepeat -int 2 # キーのリピート速度
+    defaults write -g InitialKeyRepeat -int 12 # リピート入力認識までの時間
+    defaults write -g KeyRepeat -int 1 # キーのリピート速度
+}
+
+configure_dock () {
+    # dockutilコマンドが存在するかチェック
+    if ! command -v dockutil &> /dev/null; then
+        echo "dockutilがインストールされていません。"
+        echo "Homebrewを使ってインストールしてください: brew install dockutil"
+        return 1
+    fi
+
+    defaults write com.apple.dock autohide -bool true
+
+    dockutil --remove all --no-restart
+    # 4. 設定を反映させるためにDockを再起動
+    echo "Dockを再起動して設定を適用します。"
+    killall Dock
+
+    echo "Dockの設定が完了しました。"
+}
+
+configure_other () {
+    defaults write -g com.apple.trackpad.scaling -int 2
 }
 
 echo "🚀 Setup user defaults..."
 configure_keyboard
+configure_dock
+configure_other
+echo "✅ User defaults configured."
 {{ end -}}
