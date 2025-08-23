@@ -7,6 +7,9 @@
 configure_keyboard () {
     defaults write -g InitialKeyRepeat -int 12 # リピート入力認識までの時間
     defaults write -g KeyRepeat -int 1 # キーのリピート速度
+    defaults write -g NSAutomaticCapitalizationEnabled -bool false # 文頭を自動的に大文字にする
+    defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false # スペースバーを2回押してピリオドを入力
+    defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false # 英字入力中にスペルを自動変換
 }
 
 configure_dock () {
