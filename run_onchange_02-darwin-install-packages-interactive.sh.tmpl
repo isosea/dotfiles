@@ -1,0 +1,45 @@
+#!/bin/bash
+{{ if eq .chezmoi.os "darwin" -}}
+
+set -euo pipefail
+
+CONFIG_FILE="~/.local/share/chezmoi/.chezmoidata/packages.yaml"
+
+# yq が必要
+if ! command -v yq &>/dev/null; then
+  echo "yq が必要です: brew install yq"
+  exit 1
+fi
+
+# fzf が必要
+if ! command -v fzf &>/dev/null; then
+  echo "fzf が必要です: brew install fzf"
+  exit 1
+fi
+
+# brewパッケージ一覧取得
+brews=$(yq '.packages.darwin.available_brews[]' "$CONFIG_FILE")
+casks=$(yq '.packages.darwin.available_casks[]' "$CONFIG_FILE")
+
+# fzfで選択 (複数選択可)
+selected=$(printf "brew: %s\ncask: %s\n" "$brews" "$casks" | \
+  awk '{print $1,$2}' | \
+  fzf -m --prompt="インストールするパッケージを選んでください > ")
+
+if [ -z "$selected" ]; then
+  echo "キャンセルしました"
+  exit 0
+fi
+
+# 選んだパッケージをインストール
+echo "$selected" | while read -r type pkg; do
+  if [ "$type" = "brew:" ]; then
+    echo "==> brew install $pkg"
+    brew install "$pkg"
+  elif [ "$type" = "cask:" ]; then
+    echo "==> brew install --cask $pkg"
+    brew install --cask "$pkg"
+  fi
+done
+
+{{ end -}}
