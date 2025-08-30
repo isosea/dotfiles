@@ -1,5 +1,5 @@
 #!/bin/bash
-{{- if not (eq (env "CI") "true") -}}
+{{ if not (eq (env "CI") "true") -}}
 
 {{ if eq .chezmoi.os "darwin" -}}
 
@@ -79,6 +79,6 @@ done
 
 {{ end -}}
 
-{{- else -}}
+{{ else -}}
 echo "CI detected. Skipping Homebrew bootstrap."
-{{- end -}}
+{{ end -}}
