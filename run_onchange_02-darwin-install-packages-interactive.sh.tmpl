@@ -1,4 +1,6 @@
 #!/bin/bash
+{{- if not (eq (env "CI") "true") -}}
+
 {{ if eq .chezmoi.os "darwin" -}}
 
 set -euo pipefail
@@ -76,3 +78,7 @@ printf '%s\n' "$SELECTED" | while IFS="$(printf '\t')" read -r PKG TYPE; do
 done
 
 {{ end -}}
+
+{{- else -}}
+echo "CI detected. Skipping Homebrew bootstrap."
+{{- end -}}

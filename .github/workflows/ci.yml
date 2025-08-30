@@ -1,0 +1,15 @@
+name: test
+on:
+  push:
+    branches: [main]
+jobs:
+  test:
+    name: Test
+    runs-on: macos-latest
+    steps:
+      - name: Install chezmoi
+        run: brew install chezmoi
+      - name: Initialize chezmoi
+        run: chezmoi init https://github.com/isosea/dotfiles.git
+      - name: Apply chezmoi
+        run: chezmoi apply
