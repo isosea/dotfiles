@@ -2,3 +2,10 @@
     autoCommit = true
     autoPush = true
     commitMessageTemplateFile = ".commit_message.tmpl"
+
+{{- $selectedBrews := promptMultichoice "Select additional brews to install" .packages.darwin.available_brews -}}
+{{- $selectedCasks := promptMultichoice "Select additional casks to install" .packages.darwin.available_casks -}}
+
+[data]
+    selectedBrews = {{ $selectedBrews | toJson }}
+    selectedCasks = {{ $selectedCasks | toJson }}

@@ -3,26 +3,28 @@ packages:
     brews:
       - bat
       - chezmoi
-      - direnv
       - dockutil
       - fzf
       - gh
       - ghq
-      - go
       - jq
       - mise
       - starship
       - tree
       - xdg-ninja
     casks:
-      - raycast
-      - visual-studio-code
-      - warp
-      - docker
-      - sequel-ace
-      - notion
-      - figma
-      - obsidian
       - font-hackgen
       - font-hackgen-nerd
       - jordanbaird-ice
+      - notion
+      - obsidian
+      - raycast
+      - visual-studio-code
+      - warp
+    available_brews:
+      - direnv
+      - go
+    available_casks:
+      - docker
+      - figma
+      - sequel-ace

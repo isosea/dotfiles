@@ -1,6 +1,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
+# デフォルトのパッケージをインストール
 brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.darwin.brews -}}
 brew {{ . | quote }}
@@ -9,4 +10,25 @@ brew {{ . | quote }}
 cask {{ . | quote }}
 {{ end -}}
 EOF
+
+# 追加パッケージをinteractiveに選択
+{{ if hasKey . "selectedBrews" -}}
+{{ if .selectedBrews -}}
+brew bundle --file=/dev/stdin <<EOF
+{{ range .selectedBrews -}}
+brew {{ . | quote }}
+{{ end -}}
+EOF
+{{ end -}}
+{{ end -}}
+
+{{ if hasKey . "selectedCasks" -}}
+{{ if .selectedCasks -}}
+brew bundle --file=/dev/stdin <<EOF
+{{ range .selectedCasks -}}
+cask {{ . | quote }}
+{{ end -}}
+EOF
+{{ end -}}
+{{ end -}}
 {{ end -}}
