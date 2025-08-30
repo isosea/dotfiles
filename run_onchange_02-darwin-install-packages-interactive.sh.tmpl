@@ -5,68 +5,73 @@ set -euo pipefail
 
 CONFIG_FILE="$HOME/.local/share/chezmoi/.chezmoidata/packages.yaml"
 
-# 必要コマンド確認
 need() { command -v "$1" >/dev/null 2>&1 || { echo "$1 が必要です"; exit 1; }; }
 need yq
 need fzf
 need brew
 
-# YAML から取得（raw出力で余計なクォートを防ぐ）
-mapfile -t BREWS < <(yq -r '.packages.darwin.available_brews[]?'  "$CONFIG_FILE" 2>/dev/null || true)
-mapfile -t CASKS < <(yq -r '.packages.darwin.available_casks[]?' "$CONFIG_FILE" 2>/dev/null || true)
+BREWS_FILE="$(mktemp)"; CASKS_FILE="$(mktemp)"; CHOICES_FILE="$(mktemp)"
+cleanup() { rm -f "$BREWS_FILE" "$CASKS_FILE" "$CHOICES_FILE"; }
+trap 'cleanup' 0 1 2 15
 
-if [[ ${#BREWS[@]} -eq 0 && ${#CASKS[@]} -eq 0 ]]; then
+# YAML から候補を抽出（null行は捨てる）
+yq -r '.packages.darwin.available_brews[]?'  "$CONFIG_FILE" 2>/dev/null | sed '/^null$/d' > "$BREWS_FILE" || true
+yq -r '.packages.darwin.available_casks[]?' "$CONFIG_FILE" 2>/dev/null | sed '/^null$/d' > "$CASKS_FILE" || true
+
+if [ ! -s "$BREWS_FILE" ] && [ ! -s "$CASKS_FILE" ]; then
   echo "選択肢がありません（$CONFIG_FILE を確認してください）"
   exit 1
 fi
 
-# 見出し（選択不可）は --header で表示
-HEADER="== BREW ==
-$(printf '%s\n' "${BREWS[@]}")"
-
-if [[ ${#CASKS[@]} -gt 0 ]]; then
-  HEADER+="
-== CASK ==
-$(printf '%s\n' "${CASKS[@]}")"
+# ヘッダー（選択不可の見出し）
+HEADER="== BREW =="
+if [ -s "$BREWS_FILE" ]; then
+  HEADER="$HEADER
+$(cat "$BREWS_FILE")"
+else
+  HEADER="$HEADER
+(なし)"
+fi
+HEADER="$HEADER
+== CASK =="
+if [ -s "$CASKS_FILE" ]; then
+  HEADER="$HEADER
+$(cat "$CASKS_FILE")"
+else
+  HEADER="$HEADER
+(なし)"
 fi
 
-# 実際に選べるリスト（第1列: パッケージ名 / 第2列: 種別）
-CHOICES=()
-for p in "${BREWS[@]}"; do
-  [[ -n "$p" ]] && CHOICES+=("$p"$'\t'"brew")
-done
-for p in "${CASKS[@]}"; do
-  [[ -n "$p" ]] && CHOICES+=("$p"$'\t'"cask")
-done
-
-# fzf 起動（見出しは選択不可、複数選択可）
-SELECTED=$(
-  printf '%s\n' "${CHOICES[@]}" | \
-  fzf -m \
-      --with-nth=1 \            # 第1列（パッケージ名）だけ表示
-      --prompt="インストールするパッケージを選んでください > " \
-      --header="$HEADER"
-)
-
-if [[ -z "${SELECTED:-}" ]]; then
-  echo "キャンセルしました"
-  exit 0
+# 実際に選べる行（1列目:パッケージ名 / 2列目:種別）。先頭にキャンセル用を入れる
+printf '［何もしない］\tnone\n' > "$CHOICES_FILE"
+if [ -s "$BREWS_FILE" ]; then
+  while IFS= read -r p; do
+    [ -n "$p" ] && printf '%s\tbrew\n' "$p" >> "$CHOICES_FILE"
+  done < "$BREWS_FILE"
+fi
+if [ -s "$CASKS_FILE" ]; then
+  while IFS= read -r p; do
+    [ -n "$p" ] && printf '%s\tcask\n' "$p" >> "$CHOICES_FILE"
+  done < "$CASKS_FILE"
 fi
 
-# インストール（タブ区切りを読み取って種別で分岐）
-echo "$SELECTED" | while IFS=$'\t' read -r PKG TYPE; do
+# fzf 起動（複数選択可、表示は1列目のみ）
+SELECTED="$(fzf -m \
+  --with-nth=1 \
+  --prompt='インストールするパッケージを選んでください > ' \
+  --header="$HEADER" < "$CHOICES_FILE" || true)"
+
+# Esc / 何も選ばない → 何もせず終了
+[ -z "$SELECTED" ] && exit 0
+
+# 「［何もしない］」が含まれてたら終了
+printf '%s\n' "$SELECTED" | awk -F '\t' '$2=="none"{f=1} END{exit !f}' && exit 0
+
+# まとめてインストール
+printf '%s\n' "$SELECTED" | while IFS="$(printf '\t')" read -r PKG TYPE; do
   case "$TYPE" in
-    brew)
-      echo "==> brew install $PKG"
-      brew install "$PKG"
-      ;;
-    cask)
-      echo "==> brew install --cask $PKG"
-      brew install --cask "$PKG"
-      ;;
-    *)
-      echo "種別不明: $PKG ($TYPE)" >&2
-      ;;
+    brew) echo "==> brew install $PKG"; brew install "$PKG" ;;
+    cask) echo "==> brew install --cask $PKG"; brew install --cask "$PKG" ;;
   esac
 done
 
