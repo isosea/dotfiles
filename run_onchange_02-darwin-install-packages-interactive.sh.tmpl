@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-CONFIG_FILE="~/.local/share/chezmoi/.chezmoidata/packages.yaml"
+CONFIG_FILE="$HOME/.local/share/chezmoi/.chezmoidata/packages.yaml"
 
 # yq が必要
 if ! command -v yq &>/dev/null; then
