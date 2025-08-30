@@ -21,22 +21,36 @@ fi
 brews=$(yq '.packages.darwin.available_brews[]' "$CONFIG_FILE")
 casks=$(yq '.packages.darwin.available_casks[]' "$CONFIG_FILE")
 
-# fzfで選択 (複数選択可)
-selected=$(printf "brew: %s\ncask: %s\n" "$brews" "$casks" | \
-  awk '{print $1,$2}' | \
-  fzf -m --prompt="インストールするパッケージを選んでください > ")
+# 選択肢を整形
+choices=$(cat <<EOF
+== BREW ==
+$brews
+== CASK ==
+$casks
+EOF
+)
+
+# fzfで選択 (複数選択可、見出しは選べないように --no-select)
+selected=$(echo "$choices" | \
+  fzf -m --prompt="インストールするパッケージを選んでください > " \
+      --header-lines=1 \
+      --bind "enter:toggle+accept" \
+      --delimiter " " \
+      --with-nth=1.. \
+      --tac \
+      | grep -v '^==')
 
 if [ -z "$selected" ]; then
   echo "キャンセルしました"
   exit 0
 fi
 
-# 選んだパッケージをインストール
-echo "$selected" | while read -r type pkg; do
-  if [ "$type" = "brew:" ]; then
+# 選んだやつが brew か cask かを判定してインストール
+echo "$selected" | while read -r pkg; do
+  if echo "$brews" | grep -qx "$pkg"; then
     echo "==> brew install $pkg"
     brew install "$pkg"
-  elif [ "$type" = "cask:" ]; then
+  elif echo "$casks" | grep -qx "$pkg"; then
     echo "==> brew install --cask $pkg"
     brew install --cask "$pkg"
   fi
