@@ -5,55 +5,69 @@ set -euo pipefail
 
 CONFIG_FILE="$HOME/.local/share/chezmoi/.chezmoidata/packages.yaml"
 
-# yq が必要
-if ! command -v yq &>/dev/null; then
-  echo "yq が必要です: brew install yq"
+# 必要コマンド確認
+need() { command -v "$1" >/dev/null 2>&1 || { echo "$1 が必要です"; exit 1; }; }
+need yq
+need fzf
+need brew
+
+# YAML から取得（raw出力で余計なクォートを防ぐ）
+mapfile -t BREWS < <(yq -r '.packages.darwin.available_brews[]?'  "$CONFIG_FILE" 2>/dev/null || true)
+mapfile -t CASKS < <(yq -r '.packages.darwin.available_casks[]?' "$CONFIG_FILE" 2>/dev/null || true)
+
+if [[ ${#BREWS[@]} -eq 0 && ${#CASKS[@]} -eq 0 ]]; then
+  echo "選択肢がありません（$CONFIG_FILE を確認してください）"
   exit 1
 fi
 
-# fzf が必要
-if ! command -v fzf &>/dev/null; then
-  echo "fzf が必要です: brew install fzf"
-  exit 1
-fi
+# 見出し（選択不可）は --header で表示
+HEADER="== BREW ==
+$(printf '%s\n' "${BREWS[@]}")"
 
-# brewパッケージ一覧取得
-brews=$(yq '.packages.darwin.available_brews[]' "$CONFIG_FILE")
-casks=$(yq '.packages.darwin.available_casks[]' "$CONFIG_FILE")
-
-# 選択肢を整形
-choices=$(cat <<EOF
-== BREW ==
-$brews
+if [[ ${#CASKS[@]} -gt 0 ]]; then
+  HEADER+="
 == CASK ==
-$casks
-EOF
+$(printf '%s\n' "${CASKS[@]}")"
+fi
+
+# 実際に選べるリスト（第1列: パッケージ名 / 第2列: 種別）
+CHOICES=()
+for p in "${BREWS[@]}"; do
+  [[ -n "$p" ]] && CHOICES+=("$p"$'\t'"brew")
+done
+for p in "${CASKS[@]}"; do
+  [[ -n "$p" ]] && CHOICES+=("$p"$'\t'"cask")
+done
+
+# fzf 起動（見出しは選択不可、複数選択可）
+SELECTED=$(
+  printf '%s\n' "${CHOICES[@]}" | \
+  fzf -m \
+      --with-nth=1 \            # 第1列（パッケージ名）だけ表示
+      --prompt="インストールするパッケージを選んでください > " \
+      --header="$HEADER"
 )
 
-# fzfで選択 (複数選択可、見出しは選べないように --no-select)
-selected=$(echo "$choices" | \
-  fzf -m --prompt="インストールするパッケージを選んでください > " \
-      --header-lines=1 \
-      --bind "enter:toggle+accept" \
-      --delimiter " " \
-      --with-nth=1.. \
-      --tac \
-      | grep -v '^==')
-
-if [ -z "$selected" ]; then
+if [[ -z "${SELECTED:-}" ]]; then
   echo "キャンセルしました"
   exit 0
 fi
 
-# 選んだやつが brew か cask かを判定してインストール
-echo "$selected" | while read -r pkg; do
-  if echo "$brews" | grep -qx "$pkg"; then
-    echo "==> brew install $pkg"
-    brew install "$pkg"
-  elif echo "$casks" | grep -qx "$pkg"; then
-    echo "==> brew install --cask $pkg"
-    brew install --cask "$pkg"
-  fi
+# インストール（タブ区切りを読み取って種別で分岐）
+echo "$SELECTED" | while IFS=$'\t' read -r PKG TYPE; do
+  case "$TYPE" in
+    brew)
+      echo "==> brew install $PKG"
+      brew install "$PKG"
+      ;;
+    cask)
+      echo "==> brew install --cask $PKG"
+      brew install --cask "$PKG"
+      ;;
+    *)
+      echo "種別不明: $PKG ($TYPE)" >&2
+      ;;
+  esac
 done
 
 {{ end -}}
