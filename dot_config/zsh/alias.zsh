@@ -6,6 +6,9 @@ alias -- c='code .'
 alias -- ls='ls --color=auto'
 alias -- ll='ls -al --color=auto'
 alias -- be='bundle exec'
+alias -- n='npm'
+alias -- y='yarn'
+alias -- p='pnpm'
 
 # docker
 alias -- dp='docker ps'
