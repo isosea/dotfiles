@@ -23,7 +23,6 @@ packages:
       - visual-studio-code
       - warp
     available_brews:
-      - direnv
       - go
     available_casks:
       - docker
