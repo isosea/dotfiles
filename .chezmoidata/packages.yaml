@@ -1,15 +1,11 @@
 packages:
   darwin:
     brews:
-      - bat
       - chezmoi
       - dockutil
-      - fzf
       - gh
-      - ghq
       - jq
       - mise
-      - starship
       - tree
       - xdg-ninja
       - yq
