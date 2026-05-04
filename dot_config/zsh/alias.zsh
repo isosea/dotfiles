@@ -24,5 +24,10 @@ alias -- dcd='docker compose down'
 alias -- dcr='docker compose run --rm'
 alias -- dcre='docker compose restart'
 
+# terraform
+alias -- tf='terraform'
+alias -- tfp='terraform plan'
+alias -- tfa='terraform apply'
+
 # xdg-ninja
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
