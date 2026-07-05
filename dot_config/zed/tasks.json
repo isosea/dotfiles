@@ -1,0 +1,15 @@
+[
+  {
+    "label": "Open current line on GitHub",
+    "command": "~/.config/zed-scripts/open-current-line-on-github.sh",
+    "args": [
+      "$ZED_FILE",
+      "$ZED_ROW",
+      "$ZED_WORKTREE_ROOT"
+    ],
+    "reveal": "always",
+    "hide": "on_success",
+    "save": "none",
+    "show_command": false
+  }
+]
