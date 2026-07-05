@@ -192,5 +192,16 @@
     "bindings": {
       "cmd-k cmd-f": "text_finder::Toggle"
     }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-cmd-g o": [
+        "task::Spawn",
+        {
+          "task_name": "Open current line on GitHub"
+        }
+      ]
+    }
   }
 ]
