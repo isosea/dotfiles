@@ -1,0 +1,105 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "markdown_preview": {
+    "max_width": 1200.0
+  },
+  "tabs": {
+    "file_icons": false,
+    "git_status": true
+  },
+  "status_bar": {
+    "show_active_file": false
+  },
+  "title_bar": {
+    "show_menus": false,
+    "show_branch_status_icon": false,
+  },
+  "cli_default_open_behavior": "existing_window",
+  "agent_buffer_font_size": 12.0,
+  "agent_ui_font_size": 12.0,
+  "agent": {
+    "terminal_init_command": "claude",
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "agent_servers": {
+    "claude-acp": {
+      "default_config_options": {
+        "model": "opus[1m]",
+        "mode": "auto",
+      },
+      "type": "registry",
+    },
+  },
+  "git_panel": {
+    "dock": "left",
+  },
+  "terminal": {
+    "font_family": "HackGen35 Console NF",
+  },
+  "project_panel": {
+    "dock": "left",
+    "auto_fold_dirs": false,
+  },
+  "base_keymap": "VSCode",
+  "sticky_scroll": {
+    "enabled": true,
+  },
+  "minimap": {
+    "show": "never",
+  },
+  "use_system_window_tabs": true,
+  "autosave": "on_focus_change",
+  "buffer_font_fallbacks": ["Menlo", "Monaco", "Courier New"],
+  "buffer_font_family": "HackGen35",
+  "file_types": {
+    "markdown": ["*.md"],
+  },
+  "show_edit_predictions": true,
+  "ensure_final_newline_on_save": true,
+  "tab_size": 2,
+  "ui_font_size": 16.0,
+  "buffer_font_size": 12.0,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark",
+  },
+  "languages": {
+    "Ruby": {
+      // ruby-lsp だけを起動する。"..." を付けないことで、solargraph /
+      // rubocop / fuzzy-ruby-server / kanayago など拡張が抱える他の
+      // デフォルトサーバーは一切起動しない。
+      // rubocop の診断/整形は ruby-lsp 内蔵の rubocop アドオンが担当する。
+      "language_servers": ["ruby-lsp"],
+    },
+  },
+  "lsp": {
+    "ruby-lsp": {
+      // workspace の bundle には触らず、ruby-lsp 専用の設定ディレクトリを
+      // 起点に mise 経由で起動する。ruby のバージョンは同ディレクトリの
+      // mise.toml、gem は同ディレクトリの Gemfile から自動解決される
+      // （バージョンや BUNDLE_GEMFILE をここに書く必要はない）。
+      "binary": {
+        "path": "/opt/homebrew/bin/mise",
+        "arguments": [
+          "-C",
+          "/Users/k.isogai/.config/ruby-lsp",
+          "exec",
+          "--",
+          "bundle",
+          "exec",
+          "ruby-lsp",
+        ],
+      },
+    },
+  },
+}
