@@ -1,0 +1,196 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    },
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore"
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-j ctrl-cmd-f": "editor::GoToDefinition",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "f12": "editor::GoToDefinition",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-j ctrl-cmd-r": "editor::FindAllReferences",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "alt-shift-f12": "editor::FindAllReferences",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-j ctrl-cmd-i": "editor::GoToImplementation",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "shift-f12": "editor::GoToImplementation",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-cmd-p": [
+        "editor::AddSelectionAbove",
+        {
+          "skip_soft_wrap": false,
+        },
+      ],
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-p": "editor::MoveToBeginning",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "cmd-up": "editor::MoveToBeginning",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-n": "editor::MoveToEnd",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "cmd-down": "editor::MoveToEnd",
+    },
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-cmd-n": [
+        "editor::AddSelectionBelow",
+        {
+          "skip_soft_wrap": false,
+        },
+      ],
+    },
+  },
+  {
+    "bindings": {
+      "cmd-g": "editor::FindNextMatch",
+    },
+  },
+  {
+    "bindings": {
+      "cmd-shift-g": "editor::FindPreviousMatch",
+    },
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "alt-cmd-i": [
+        "workspace::IncreaseActiveDockSize",
+        {
+          "px": 0
+        }
+      ]
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-alt-=": [
+        "workspace::IncreaseActiveDockSize",
+        {
+          "px": 0
+        }
+      ]
+    }
+  },
+  {
+    "unbind": {
+      "alt-cmd-i": "dev::ToggleInspector"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "alt-cmd-d": [
+        "workspace::DecreaseActiveDockSize",
+        {
+          "px": 0
+        }
+      ]
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "ctrl-alt--": [
+        "workspace::DecreaseActiveDockSize",
+        {
+          "px": 0
+        }
+      ]
+    }
+  },
+  {
+    "bindings": {
+      "cmd-k alt-cmd-shift-c": "editor::CopyFileLocation"
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-tab": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "cmd-}": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-shift-tab": "pane::ActivatePreviousItem"
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "cmd-{": "pane::ActivatePreviousItem"
+    }
+  },
+  {
+    "bindings": {
+      "cmd-k cmd-f": "text_finder::Toggle"
+    }
+  }
+]
