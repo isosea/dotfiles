@@ -1,5 +1,5 @@
 export FZF_DEFAULT_OPTS="--reverse"
-export EDITOR="code -w"
+export EDITOR="zed -w"
 export STARSHIP_SHELL="zsh"
 export STARSHIP_CONFIG=$XDG_CONFIG_HOME/starship/config.toml
 
