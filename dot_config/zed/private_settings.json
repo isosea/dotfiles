@@ -7,32 +7,21 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "format_on_save": "on",
   "markdown_preview": {
-    "max_width": 1200.0
+    "max_width": 1200.0,
   },
   "tabs": {
-    "file_icons": false,
-    "git_status": true
+    "git_status": true,
   },
-  "status_bar": {
-    "show_active_file": false
-  },
-  "title_bar": {
-    "show_menus": false,
-    "show_branch_status_icon": false,
-  },
-  "cli_default_open_behavior": "existing_window",
-  "agent_buffer_font_size": 12.0,
   "agent_ui_font_size": 12.0,
   "agent": {
     "terminal_init_command": "claude",
     "dock": "right",
-    "favorite_models": [],
-    "model_parameters": [],
   },
   "agent_servers": {
     "codex-acp": {
-      "type": "registry"
+      "type": "registry",
     },
     "claude-acp": {
       "default_config_options": {
@@ -52,24 +41,9 @@
     "dock": "left",
     "auto_fold_dirs": false,
   },
-  "base_keymap": "VSCode",
-  "sticky_scroll": {
-    "enabled": true,
-  },
-  "minimap": {
-    "show": "never",
-  },
-  "use_system_window_tabs": true,
   "autosave": "on_focus_change",
-  "buffer_font_fallbacks": ["Menlo", "Monaco", "Courier New"],
   "buffer_font_family": "HackGen35",
-  "file_types": {
-    "markdown": ["*.md"],
-  },
-  "show_edit_predictions": true,
-  "ensure_final_newline_on_save": true,
   "tab_size": 2,
-  "ui_font_size": 16.0,
   "buffer_font_size": 12.0,
   "theme": {
     "mode": "system",
@@ -84,24 +58,52 @@
       // rubocop の診断/整形は ruby-lsp 内蔵の rubocop アドオンが担当する。
       "language_servers": ["ruby-lsp"],
     },
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true,
+      },
+    },
+    "TSX": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true,
+      },
+    },
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true,
+      },
+    },
   },
   "lsp": {
     "ruby-lsp": {
-      // workspace の bundle には触らず、ruby-lsp 専用の設定ディレクトリを
-      // 起点に mise 経由で起動する。ruby のバージョンは同ディレクトリの
-      // mise.toml、gem は同ディレクトリの Gemfile から自動解決される
-      // （バージョンや BUNDLE_GEMFILE をここに書く必要はない）。
+      // ruby は `mise env` 経由で ~/.config/ruby-lsp/mise.toml から、
+      // gem は同ディレクトリの Gemfile（BUNDLE_GEMFILE）から解決する。
       "binary": {
-        "path": "/opt/homebrew/bin/mise",
+        "path": "/bin/sh",
         "arguments": [
-          "-C",
-          "/Users/k.isogai/.config/ruby-lsp",
-          "exec",
-          "--",
-          "bundle",
-          "exec",
-          "ruby-lsp",
+          "-c",
+          "eval \"$(/opt/homebrew/bin/mise -C ~/.config/ruby-lsp env)\" && BUNDLE_GEMFILE=~/.config/ruby-lsp/Gemfile exec bundle exec ruby-lsp",
         ],
+      },
+      "initialization_options": {
+        "indexing": {
+          "excludedPatterns": ["**/feature-specs/**/*.rb"],
+        },
+      },
+    },
+  },
+  "profiles": {
+    "oxc": {
+      "settings": {
+        "languages": {
+          "TypeScript": {
+            "formatter": { "language_server": { "name": "oxfmt" } },
+          },
+          "TSX": { "formatter": { "language_server": { "name": "oxfmt" } } },
+          "JavaScript": {
+            "formatter": { "language_server": { "name": "oxfmt" } },
+          },
+        },
       },
     },
   },

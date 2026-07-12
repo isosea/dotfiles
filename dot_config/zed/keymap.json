@@ -203,5 +203,93 @@
         }
       ]
     }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g p": "git::Pull"
+    }
+  },
+  {
+    "context": "GitPanel",
+    "unbind": {
+      "ctrl-g down": "git::Pull"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g up": "git::Push"
+    }
+  },
+  {
+    "context": "GitPanel",
+    "unbind": {
+      "ctrl-g up": "git::Push"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g d": "git::Diff"
+    }
+  },
+  {
+    "context": "AcpThread > Editor",
+    "unbind": {
+      "ctrl-shift-d": "git::Diff"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g f": "git::Fetch"
+    }
+  },
+  {
+    "context": "GitPanel",
+    "unbind": {
+      "ctrl-g ctrl-g": "git::Fetch"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g b": "git::CopyBranchName"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g ctrl-cmd-g": "git_graph::Open"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-,": "editor::SelectLargerSyntaxNode"
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-cmd-right": "editor::SelectLargerSyntaxNode"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-cmd-.": "editor::SelectSmallerSyntaxNode"
+    }
+  },
+  {
+    "context": "Editor",
+    "unbind": {
+      "ctrl-cmd-left": "editor::SelectSmallerSyntaxNode"
+    }
+  },
+  {
+    "bindings": {
+      "cmd-q cmd-q": "zed::Quit"
+    }
+  },
+  {
+    "unbind": {
+      "cmd-q": "zed::Quit"
+    }
   }
 ]
