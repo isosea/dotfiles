@@ -291,5 +291,10 @@
     "unbind": {
       "cmd-q": "zed::Quit"
     }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g s": "git::StashAll"
+    }
   }
 ]
