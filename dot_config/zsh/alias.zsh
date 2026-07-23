@@ -10,6 +10,7 @@ alias -- be='bundle exec'
 alias -- n='npm'
 alias -- y='yarn'
 alias -- p='pnpm'
+alias -- awsv='aws-vault'
 
 # docker
 alias -- dp='docker ps'
