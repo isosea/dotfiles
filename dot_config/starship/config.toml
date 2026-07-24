@@ -2,3 +2,15 @@ add_newline = false
 
 [directory]
 truncate_to_repo = false
+
+[mise]
+healthy_symbol = '🍽️'
+disabled = false
+
+[aws]
+format = 'on [$symbol($profile )(\[$duration\] )]($style)'
+symbol = '🅰 '
+
+[gcloud]
+format = 'on [$symbol(\($region\))]($style) '
+symbol = '🅶 '
