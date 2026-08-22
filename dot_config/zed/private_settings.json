@@ -24,7 +24,7 @@
   "agent_servers": {
     "codex-acp": {
       "default_config_options": {
-        "reasoning_effort": "medium"
+        "reasoning_effort": "medium",
       },
       "type": "registry",
     },
@@ -79,6 +79,9 @@
       "code_actions_on_format": {
         "source.fixAll.eslint": true,
       },
+    },
+    "Markdown": {
+      "format_on_save": "off",
     },
   },
   "lsp": {
