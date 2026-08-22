@@ -7,6 +7,8 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "diff_view_style": "unified",
+  "cli_default_open_behavior": "existing_window",
   "format_on_save": "on",
   "markdown_preview": {
     "max_width": 1200.0,
@@ -35,6 +37,8 @@
     },
   },
   "git_panel": {
+    "group_by": "staging",
+    "tree_view": true,
     "dock": "left",
   },
   "terminal": {

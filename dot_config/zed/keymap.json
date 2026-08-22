@@ -296,5 +296,10 @@
     "bindings": {
       "ctrl-cmd-g s": "git::StashAll"
     }
+  },
+  {
+    "bindings": {
+      "ctrl-cmd-g r": "git::SelectRepo"
+    }
   }
 ]
