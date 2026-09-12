@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+set -euo pipefail
+
+# Re-run this script whenever the mise tool configuration changes.
+# config checksum: {{ include "dot_config/mise/create_config.toml.tmpl" | sha256sum }}
+mise install --yes
+{{ end -}}

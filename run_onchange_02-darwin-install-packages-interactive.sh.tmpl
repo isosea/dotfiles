@@ -9,7 +9,7 @@ CONFIG_FILE="$HOME/.local/share/chezmoi/.chezmoidata/packages.yaml"
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "$1 が必要です"; exit 1; }; }
 need yq
-need fzf
+need mise
 need brew
 
 BREWS_FILE="$(mktemp)"; CASKS_FILE="$(mktemp)"; CHOICES_FILE="$(mktemp)"
@@ -58,7 +58,7 @@ if [ -s "$CASKS_FILE" ]; then
 fi
 
 # fzf 起動（複数選択可、表示は1列目のみ）
-SELECTED="$(fzf -m \
+SELECTED="$(mise exec -- fzf -m \
   --with-nth=1 \
   --prompt='インストールするパッケージを選んでください > ' \
   --header="$HEADER" < "$CHOICES_FILE" || true)"
