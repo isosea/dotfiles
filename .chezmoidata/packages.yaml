@@ -16,8 +16,6 @@ packages:
       - raycast
       - visual-studio-code
       - warp
-    available_brews:
-      - go
     available_casks:
       - docker
       - figma
