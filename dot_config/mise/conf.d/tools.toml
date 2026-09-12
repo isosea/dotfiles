@@ -1,7 +1,12 @@
 [tools]
 bat = "latest"
+bun = "latest"
 fzf = "latest"
 ghq = "latest"
+go = "latest"
 jq = "latest"
 lefthook = "latest"
+node = "lts"
+pnpm = "latest"
+python = "latest"
 starship = "latest"
