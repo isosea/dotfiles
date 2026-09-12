@@ -5,5 +5,6 @@ set -euo pipefail
 
 # Re-run this script whenever the mise tool configuration changes.
 # config checksum: {{ include "dot_config/mise/create_config.toml.tmpl" | sha256sum }}
+# jq config checksum: {{ include "dot_config/mise/conf.d/jq.toml" | sha256sum }}
 mise install --yes
 {{ end -}}

@@ -4,7 +4,6 @@ packages:
       - chezmoi
       - dockutil
       - gh
-      - jq
       - mise
       - tree
       - xdg-ninja
