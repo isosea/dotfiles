@@ -2,5 +2,6 @@
 bat = "latest"
 fzf = "latest"
 ghq = "latest"
+jq = "latest"
 lefthook = "latest"
 starship = "latest"
