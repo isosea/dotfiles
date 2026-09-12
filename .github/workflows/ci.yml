@@ -15,6 +15,5 @@ jobs:
       - name: Initialize and apply chezmoi
         env:
           # Exercise the interactive package script without opening fzf's UI.
-          CI: "false"
           FZF_DEFAULT_OPTS: "--filter=何もしない"
         run: chezmoi init --apply "$GITHUB_WORKSPACE"
