@@ -4,7 +4,7 @@
 {{ if eq (env "CI") "true" -}}
 # CI only needs the bootstrap tools. Installing desktop casks here makes the
 # bootstrap test depend on unrelated third-party downloads.
-brew install mise yq
+brew install mise
 {{ else -}}
 # デフォルトのパッケージをインストール
 brew bundle --file=/dev/stdin <<EOF
