@@ -3,10 +3,7 @@
 
 set -euo pipefail
 
-CONFIG_FILE="$HOME/.local/share/chezmoi/.chezmoidata/packages.yaml"
-
 need() { command -v "$1" >/dev/null 2>&1 || { echo "$1 が必要です"; exit 1; }; }
-need yq
 need mise
 need brew
 
@@ -14,12 +11,21 @@ BREWS_FILE="$(mktemp)"; CASKS_FILE="$(mktemp)"; CHOICES_FILE="$(mktemp)"
 cleanup() { rm -f "$BREWS_FILE" "$CASKS_FILE" "$CHOICES_FILE"; }
 trap 'cleanup' 0 1 2 15
 
-# YAML から候補を抽出（null行は捨てる）
-yq -r '.packages.darwin.available_brews[]?'  "$CONFIG_FILE" 2>/dev/null | sed '/^null$/d' > "$BREWS_FILE" || true
-yq -r '.packages.darwin.available_casks[]?' "$CONFIG_FILE" 2>/dev/null | sed '/^null$/d' > "$CASKS_FILE" || true
+# chezmoiが読み込んだデータから候補を生成
+cat >"$BREWS_FILE" <<'EOF'
+{{ range .packages.darwin.available_brews -}}
+{{ . }}
+{{ end -}}
+EOF
+
+cat >"$CASKS_FILE" <<'EOF'
+{{ range .packages.darwin.available_casks -}}
+{{ . }}
+{{ end -}}
+EOF
 
 if [ ! -s "$BREWS_FILE" ] && [ ! -s "$CASKS_FILE" ]; then
-  echo "選択肢がありません（$CONFIG_FILE を確認してください）"
+  echo "選択肢がありません"
   exit 1
 fi
 
