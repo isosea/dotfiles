@@ -2,14 +2,18 @@ name: test
 on:
   push:
     branches: [main]
+  pull_request:
 jobs:
   test:
     name: Test
     runs-on: macos-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Install chezmoi
         run: brew install chezmoi
-      - name: Initialize chezmoi
-        run: chezmoi init https://github.com/isosea/dotfiles.git
-      - name: Apply chezmoi
-        run: chezmoi apply
+      - name: Initialize and apply chezmoi
+        env:
+          # Exercise the interactive package script without opening fzf's UI.
+          FZF_DEFAULT_OPTS: "--filter=何もしない"
+        run: chezmoi init --apply "$GITHUB_WORKSPACE"
