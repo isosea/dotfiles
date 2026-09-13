@@ -21,3 +21,9 @@ packages:
       - figma
       - sequel-ace
       - hammerspoon
+      - zed
+      - drawio
+      - android-studio
+      - karabiner-elements
+      - chatgpt
+      - claude
